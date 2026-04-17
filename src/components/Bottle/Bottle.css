@@ -1,0 +1,30 @@
+.bottle {
+    border: 1px solid black;
+    border-radius: 15px;
+    overflow: hidden;   /* ⭐ এটা যোগ করো */
+    text-align: center;
+ }
+ 
+ .bottle img {
+     width: 250px;
+     /* height: 350px; */
+     /* object-fit: cover; */
+     object-position: center;
+ }
+
+ .bottle-text{
+    text-align: center;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+ }
+
+ .bottle-text button{
+    padding: 10px 15px;
+    width: 100px;
+    margin: 10px auto;
+    border-radius: 8px;
+    border: none;
+ }
+
