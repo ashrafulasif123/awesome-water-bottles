@@ -8,34 +8,29 @@ const Bottles = ({ bottlesPromise }) => {
 
     const bottles = use(bottlesPromise)
 
-    
-    useEffect(()=> {
+
+    useEffect(() => {
         const cartBottles = []
         const storedCartIds = getStoredCart()
         // const cartBottles = bottles.filter(bottle => storedCartIds.includes(bottle.id))
-        for(const id of storedCartIds){
+        for (const id of storedCartIds) {
             const cartBottle = bottles.find(bottle => bottle.id === id)
-            if(cartBottle){
+            if (cartBottle) {
                 cartBottles.push(cartBottle)
             }
-            
+
         }
         console.log(cartBottles)
     }, [bottles])
 
     const handleAddToCart = (bottle) => {
-        const exists = cart.find(c => c.id === bottle.id)
-        if (!exists) {
-            const updateCart = [...cart, bottle]
-            console.log(updateCart)
-            setCart(updateCart)
-            addIdToCart(bottle.id)
-            // localStorage.setItem("cart", JSON.stringify(updateCart))
-        }
-
+        const updateCart = [...cart, bottle]
+        console.log(updateCart)
+        setCart(updateCart)
+        addIdToCart(bottle.id)
     }
 
-    
+
     return (
         <>
             <p>Bottle in Cart: {cart.length}</p>
