@@ -1,0 +1,17 @@
+// const [cartIds, setCartIds] = useState(getStoredCart())
+
+// useEffect(() => {
+//     const cartBottles = []
+//     const storedCartIds = getStoredCart()
+//     // const cartBottles = bottles.filter(bottle => storedCartIds.includes(bottle.id))
+//     for (const id of storedCartIds) {
+//         const cartBottle = bottles.find(bottle => bottle.id === id)
+//         if (cartBottle) {
+//             cartBottles.push(cartBottle)
+//         }
+
+//     }
+//     console.log(cartBottles)
+// }, [bottles, cartIds)
+
+// setCartIds(getStoredCart())
