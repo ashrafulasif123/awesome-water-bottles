@@ -1,42 +1,50 @@
-import React, { use, useEffect, useState } from 'react';
-import Bottle from '../Bottle/Bottle';
+import React, { use, useState, useEffect } from 'react'
+import Bottle from '../Bottle/Bottle'
 import './Bottles.css'
-import { addIdToCart, getStoredCart } from '../../utilities/localstorage';
+import { addIdToCartToLs, getStoredCart } from '../../utilities/localstorage'
 
 const Bottles = ({ bottlesPromise }) => {
-    const [cart, setCart] = useState([])
     const bottles = use(bottlesPromise)
 
-    useEffect(() => {
-        const cartBottles = []
-        const storedCartIds = getStoredCart()
-        // const cartBottles = bottles.filter(bottle => storedCartIds.includes(bottle.id))
-        for (const id of storedCartIds) {
-            const cartBottle = bottles.find(bottle => bottle.id === id)
-            if (cartBottle) {
-                cartBottles.push(cartBottle)
-            }
+    // state (single source of truth)
+    const [cartIds, setCartIds] = useState([])
 
-        }
-        console.log(cartBottles)
-    }, [bottles])
+    // 🔥 load from localStorage (once when bottles ready)
+    // useEffect(() => {
+    //     const storedIds = getStoredCart()
+    //     setCartIds(storedIds)
+    // }, [bottles])
 
+    // derived data
+    const cartBottles = bottles.filter(bottle =>
+        cartIds.includes(bottle.id)
+    )
+    console.log(cartBottles)
     const handleAddToCart = (bottle) => {
-        const updateCart = [...cart, bottle]
-        console.log(updateCart)
-        setCart(updateCart)
-        addIdToCart(bottle.id)
-    }
+        if (cartIds.includes(bottle.id)) return
 
+        // update state first (UI instantly)
+        setCartIds(prev => [...prev, bottle.id])
+
+        // update localStorage
+        addIdToCartToLs(bottle.id)
+    }
 
     return (
         <>
-            <p>Bottle in Cart: {cart.length}</p>
+            <p>Bottle in Cart: {cartBottles.length}</p>
+
             <div className='bottles-container'>
-                {bottles.map(bottle => <Bottle key={bottle.id} bottle={bottle} handleAddToCart={handleAddToCart}></Bottle>)}
+                {bottles.map(bottle => (
+                    <Bottle
+                        key={bottle.id}
+                        bottle={bottle}
+                        handleAddToCart={handleAddToCart}
+                    />
+                ))}
             </div>
         </>
-    );
-};
+    )
+}
 
-export default Bottles;
+export default Bottles

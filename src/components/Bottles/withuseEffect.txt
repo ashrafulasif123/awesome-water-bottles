@@ -1,0 +1,49 @@
+import React, { use, useState, useEffect } from 'react'
+import Bottle from '../Bottle/Bottle'
+import './Bottles.css'
+import { addIdToCart, getStoredCart } from '../../utilities/localstorage'
+
+const Bottles = ({ bottlesPromise }) => {
+    const bottles = use(bottlesPromise)
+
+    // state
+    const [cartIds, setCartIds] = useState([])
+
+    // 🔥 useEffect → initial load from localStorage
+    useEffect(() => {
+        const storedIds = getStoredCart()
+        setCartIds(storedIds)
+    }, [])
+
+    // derived data (still no useEffect needed here)
+    const cartBottles = bottles.filter(bottle =>
+        cartIds.includes(bottle.id)
+    )
+
+    const handleAddToCart = (bottle) => {
+        if (cartIds.includes(bottle.id)) return
+
+        addIdToCart(bottle.id) // update localStorage
+
+        // update state → triggers re-render
+        setCartIds(prev => [...prev, bottle.id])
+    }
+
+    return (
+        <>
+            <p>Bottle in Cart: {cartBottles.length}</p>
+
+            <div className='bottles-container'>
+                {bottles.map(bottle => (
+                    <Bottle
+                        key={bottle.id}
+                        bottle={bottle}
+                        handleAddToCart={handleAddToCart}
+                    />
+                ))}
+            </div>
+        </>
+    )
+}
+
+export default Bottles

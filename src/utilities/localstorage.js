@@ -21,5 +21,6 @@ const addItemToCartToLocalStorage = id => {
 
 export {
     getCartFromLocalStorage as getStoredCart,
-    addItemToCartToLocalStorage as addIdToCart
+    addItemToCartToLocalStorage as addIdToCartToLs
 }
+

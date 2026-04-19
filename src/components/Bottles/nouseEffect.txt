@@ -13,7 +13,7 @@ const Bottles = ({ bottlesPromise }) => {
     const cartBottles = bottles.filter(bottle =>
         cartIds.includes(bottle.id)
     )
-
+    console.log(cartBottles)
     const handleAddToCart = (bottle) => {
         if (cartIds.includes(bottle.id)) return
 
