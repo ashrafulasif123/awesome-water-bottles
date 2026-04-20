@@ -1,4 +1,4 @@
-import React, { use, useState, useEffect } from 'react'
+import React, { use, useState } from 'react'
 import Bottle from '../Bottle/Bottle'
 import './Bottles.css'
 import { addIdToCartToLs, getStoredCart } from '../../utilities/localstorage'
@@ -7,13 +7,7 @@ const Bottles = ({ bottlesPromise }) => {
     const bottles = use(bottlesPromise)
 
     // state (single source of truth)
-    const [cartIds, setCartIds] = useState([])
-
-    // 🔥 load from localStorage (once when bottles ready)
-    // useEffect(() => {
-    //     const storedIds = getStoredCart()
-    //     setCartIds(storedIds)
-    // }, [bottles])
+    const [cartIds, setCartIds] = useState(() => getStoredCart())
 
     // derived data
     const cartBottles = bottles.filter(bottle =>
@@ -21,10 +15,11 @@ const Bottles = ({ bottlesPromise }) => {
     )
     console.log(cartBottles)
     const handleAddToCart = (bottle) => {
-        if (cartIds.includes(bottle.id)) return
+        if (cartIds.includes(bottle.id)) return alert('Duplicate is not allowed')
 
         // update state first (UI instantly)
-        setCartIds(prev => [...prev, bottle.id])
+        const update = [...cartIds, bottle.id]
+        setCartIds(update)
 
         // update localStorage
         addIdToCartToLs(bottle.id)
