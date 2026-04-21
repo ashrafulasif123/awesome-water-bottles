@@ -21,10 +21,10 @@ const Bottles = ({ bottlesPromise }) => {
         setCart(cartBottles)
 
     }, [bottles])
-
+    console.log(cart)
 
     const handleAddToCart = (bottle) => {
-
+        if (cart.find(c => c.id === bottle.id)) return alert('Duplicate ID')
         addIdToCartToLs(bottle.id)
         setCart([...cart, bottle])
     }

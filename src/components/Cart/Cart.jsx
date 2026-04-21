@@ -1,7 +1,6 @@
-// import React, { useState } from 'react';
-import './Bottle.css'
+import React from 'react';
 
-const Bottle = ({ bottle, handleAddToCart }) => {
+const Cart = ({ bottle, handleDeleteFromCart }) => {
 
     const { img, name, stock, price } = bottle
 
@@ -12,10 +11,10 @@ const Bottle = ({ bottle, handleAddToCart }) => {
                 <h2>Bottle Name:{name}</h2>
                 <p>Price: {price}</p>
                 <p>Remaining: {stock}</p>
-                <button onClick={() => handleAddToCart(bottle)}>Buy Now</button>
+                <button onClick={() => handleDeleteFromCart(bottle)}>Delete</button>
             </div>
         </div>
     );
 };
 
-export default Bottle;
+export default Cart;

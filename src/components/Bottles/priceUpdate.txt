@@ -1,0 +1,67 @@
+import React, { useEffect, useState } from 'react';
+import Bottle from '../Bottle/Bottle';
+import './Bottles.css'
+import { addIdToCartToLs, getStoredCart } from '../../utilities/localstorage';
+
+const Bottles = () => {
+    const [cart, setCart] = useState([])
+    const [bottles, setBottles] = useState([])
+
+
+    useEffect(() => {
+        const storedBottles = localStorage.getItem("bottles")
+        if (storedBottles) {
+            setBottles(JSON.parse(storedBottles))
+        }
+        else {
+            fetch('./bottles.json')
+                .then(res => res.json())
+                .then(data => {
+                    setBottles(data)
+                    // localStorage.setItem("bottles", JSON.stringify(data))
+                })
+        }
+    }, [])
+
+
+    useEffect(() => {
+        const cartBottles = []
+        const cartIds = getStoredCart()
+        for (const cartId of cartIds) {
+            const cartBottle = bottles.find(bottle => cartId === bottle.id)
+            if (cartBottle) {
+                cartBottles.push(cartBottle)
+            }
+
+        }
+        setCart(cartBottles)
+
+    }, [bottles])
+
+
+    const handleAddToCart = (bottle) => {
+        if (cart.find(c => c.id === bottle.id)) return alert('Duplicate ID')
+        addIdToCartToLs(bottle.id)
+        setCart([...cart, bottle])
+    }
+
+    const handleUpdatePrice = (bottle) => {
+        const updatePriceBottle = bottles.map(b => b.id === bottle.id ? { ...b, price: Number(b.price) + 10 } : b)
+        setBottles(updatePriceBottle)
+        localStorage.setItem("bottles", JSON.stringify(updatePriceBottle))
+    }
+
+
+
+    return (
+        <>
+            {/* <p>Total Bottle: {bottles.length}</p> */}
+            <p>Bottle in Cart: {cart.length}</p>
+            <div className='bottles-container'>
+                {bottles.map(bottle => <Bottle key={bottle.id} bottle={bottle} handleAddToCart={handleAddToCart} handleUpdatePrice={handleUpdatePrice}></Bottle>)}
+            </div>
+        </>
+    );
+};
+
+export default Bottles;
